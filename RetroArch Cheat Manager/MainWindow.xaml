@@ -1,0 +1,76 @@
+﻿<Window x:Class="RetroArch_Cheat_Manager.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RetroArch_Cheat_Manager"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="19*"/>
+        </Grid.RowDefinitions>
+        
+        <DockPanel>
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="_File">
+                    <MenuItem Header="_New" Click="NewFile"/>
+                    <MenuItem Header="_Open" Click="OpenFile"/>
+                    <MenuItem Header="_Save" Click="SaveFile"/>
+                </MenuItem>
+                <MenuItem Header="_Test">
+                    <MenuItem Header="_Option 1"/>
+                    <MenuItem Header="O_ption 2"/>
+                    <MenuItem Header="Op_tion 3"/>
+                    <MenuItem Header="Opt_ion 4"/>
+                    <MenuItem Header="Opti_on 5"/>
+                    <MenuItem Header="Optio_n 6"/>
+                </MenuItem>
+            </Menu>
+        </DockPanel>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="11*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                </Grid.RowDefinitions>
+
+                <Label x:Name="label_CurrentCheats" Content="Current Cheats (0):" />
+                <ListBox x:Name="listbox_CheatsList" Grid.Row="1" >
+                </ListBox>
+                <Button  x:Name="button_EditCheat" Content="Edit Cheat" Grid.Row="2" Click="EditCheat"/>
+                <Button  x:Name="button_DeleteCheat" Content="Delete Cheat" Grid.Row="3" Click="DeleteCheat" />
+            </Grid>
+
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="9*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                </Grid.RowDefinitions>
+
+                <Label Content="Cheat Name:" />
+                <TextBox x:Name="textbox_CheatName" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="1"/>
+                <Label Content="Cheat Codes:" Grid.Row="2"/>
+                <TextBox x:Name="textbox_CheatCodes"  AcceptsReturn="True" Grid.Row="3"/>
+                <Button x:Name="button_SaveCheat" Content="Save Cheat" Grid.Row="4" Click="SaveCheat"/>
+                <Button x:Name="button_NewCheat" Content="Add As New Cheat" Grid.Row="5" Click="AddCheat"/>
+            </Grid>
+
+        </Grid>
+
+    </Grid>
+
+</Window>

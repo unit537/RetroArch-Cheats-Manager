@@ -5,8 +5,7 @@ WPF Application that allows the user to create and edit cheat files used by Retr
 ----------------------------------------------------------------------------------------------------
 
 # Known Issues:
-* Crash When Canceling the OpenFileDialog
-* Crash When Doing Anything Out Of Order
+* None as of 7/23/2018
 
 ----------------------------------------------------------------------------------------------------
 
@@ -30,5 +29,4 @@ Enter each code on it's own line inside the "Cheat Codes" textbox, the program w
 ----------------------------------------------------------------------------------------------------
 
 # ToDo:
-* Add exception checks to avoid crashes
 * Allow user to modify a specific cheat's index (So it can appear earlier or later in the list in RetroArch)

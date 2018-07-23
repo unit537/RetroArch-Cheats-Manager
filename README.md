@@ -1,11 +1,17 @@
 # RetroArch-Cheats-Manager
+
 WPF Application that allows the user to create and edit cheat files used by RetroArch.
+
 ----------------------------------------------------------------------------------------------------
+
 # Known Issues:
 * Crash When Canceling the OpenFileDialog
 * Crash When Doing Anything Out Of Order
+
 ----------------------------------------------------------------------------------------------------
+
 # How To Use:
+
 * Editing an Existing Cheat
   1. Open a file via "File > Open".
   2. Select a Cheat on the left pane and press the "Edit Cheat" button.
@@ -18,8 +24,11 @@ WPF Application that allows the user to create and edit cheat files used by Retr
   4. When done, use "File > Save" ro save your new cheats file.
   
 ## For Multi-Line Cheats
+
 Enter each code on it's own line inside the "Cheat Codes" textbox, the program will format the text appropriatly when saving the cheat file. **DO NOT ENTER RANDOM TEXT INTO THIS TEXTBOX**, you must enter the cheat code exactly as it appears from where you have sourced it from. The application will automatically filter out extra spaces and newline characters, _it will not filter out bad codes or any additional text._
+
 ----------------------------------------------------------------------------------------------------
+
 # ToDo:
 * Add exception checks to avoid crashes
 * Allow user to modify a specific cheat's index (So it can appear earlier or later in the list in RetroArch)

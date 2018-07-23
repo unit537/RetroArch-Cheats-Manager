@@ -24,15 +24,40 @@ namespace RetroArch_Cheat_Manager
     {
         int cheatCount = 0;
         int currentCheatID = -1;
-        String filepath;
-        String fileContents;
-        List<Cheat> cheats;
+        String filepath = null;
+        String fileContents = null;
+        List<Cheat> cheats = null;
 
         public MainWindow()
         {
             InitializeComponent();
             cheats = new List<Cheat>();
             UpdateCheatCount(cheatCount);
+            EnableUI(false);
+        }
+
+        private void ClearUI()
+        {
+            textbox_CheatName.Text = "";
+            textbox_CheatCodes.Text = "";
+            PopulateListBox();
+        }
+
+        private void EnableUI(bool status)
+        {
+            label_CurrentCheats.IsEnabled = status;
+            label_CheatName.IsEnabled = status;
+            label_CheatCodes.IsEnabled = status;
+            listbox_CheatsList.IsEnabled = status;
+            textbox_CheatName.IsEnabled = status;
+            textbox_CheatCodes.IsEnabled = status;
+            button_DeleteCheat.IsEnabled = status;
+            button_EditCheat.IsEnabled = status;
+            button_NewCheat.IsEnabled = status;
+            button_SaveCheat.IsEnabled = status;
+            menuitem_FileSave.IsEnabled = status;
+            menuitem_FileClose.IsEnabled = status;
+            ClearUI();
         }
 
         private void UpdateCheatCount(int n)
@@ -40,6 +65,14 @@ namespace RetroArch_Cheat_Manager
             cheatCount = n;
             label_CurrentCheats.Content = "Current Cheats (" + cheatCount + "):";
             PopulateListBox();
+            if (filepath == null)
+            {
+                EnableUI(false);
+            }
+            else
+            {
+                EnableUI(true);
+            }
         }
 
         private void PopulateListBox()
@@ -60,6 +93,7 @@ namespace RetroArch_Cheat_Manager
             if (sfd.ShowDialog() == true)
             {
                 filepath = sfd.FileName;
+                UpdateCheatCount(0);
             }
         }
 
@@ -74,61 +108,61 @@ namespace RetroArch_Cheat_Manager
             {
                 filepath = ofd.FileName;
                 fileContents = File.ReadAllText(filepath);
+
+                string[] lines = fileContents.Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+
+                for (int i = 0; i < lines.Length; i++)
+                {
+                    string line = lines[i];
+
+                    if (line.Contains("cheats = "))
+                    {
+                        line = line.Remove(0, 8);
+                        line.Trim();
+                        cheatCount = Int32.Parse(line);
+
+                        for (int j = 0; j < cheatCount; j++)
+                        {
+                            cheats.Add(new Cheat());
+                            //cheats.Insert(i, new Cheat());
+                        }
+                        UpdateCheatCount(cheatCount);
+                    }
+
+                    if (line.Contains("_desc"))
+                    {
+                        line = line.Remove(0, 5);
+                        int id = Int32.Parse(line.Remove(line.IndexOf("_")));
+                        string name = line.Substring(line.IndexOf("\"") + 1, line.Length - line.IndexOf("\"") - 2);
+                        cheats.ElementAt(id).Name = name;
+                        //cheats.ElementAt(id].Id = id;
+                    }
+
+                    if (line.Contains("_code"))
+                    {
+                        line = line.Remove(0, 5);
+                        int id = Int32.Parse(line.Remove(line.IndexOf("_")));
+                        string code = line.Substring(line.IndexOf("\"") + 1, line.Length - line.IndexOf("\"") - 2);
+                        cheats.ElementAt(id).Code = code;
+                    }
+
+                    if (line.Contains("_enable"))
+                    {
+                        line = line.Remove(0, 5);
+                        int id = Int32.Parse(line.Remove(line.IndexOf("_")));
+                        string enable = line.Substring(line.IndexOf("=") + 2).ToLower();
+                        if (enable == "false")
+                        {
+                            cheats.ElementAt(id).Enable = false;
+                        }
+                        else if (enable == "true")
+                        {
+                            cheats.ElementAt(id).Enable = true;
+                        }
+                    }
+                }
+                PopulateListBox();
             }
-
-            string[] lines = fileContents.Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
-
-            for (int i = 0; i < lines.Length; i++)
-            {
-                string line = lines[i];
-
-                if (line.Contains("cheats = "))
-                {
-                    line = line.Remove(0, 8);
-                    line.Trim();
-                    cheatCount = Int32.Parse(line);
-
-                    for (int j = 0; j < cheatCount; j++)
-                    {
-                        cheats.Add(new Cheat());
-                        //cheats.Insert(i, new Cheat());
-                    }
-                    UpdateCheatCount(cheatCount);
-                }
-
-                if (line.Contains("_desc"))
-                {
-                    line = line.Remove(0, 5);
-                    int id = Int32.Parse( line.Remove( line.IndexOf("_") ) );
-                    string name = line.Substring(line.IndexOf("\"") + 1, line.Length - line.IndexOf("\"") - 2);
-                    cheats.ElementAt(id).Name = name;
-                    //cheats.ElementAt(id].Id = id;
-                }
-
-                if (line.Contains("_code"))
-                {
-                    line = line.Remove(0, 5);
-                    int id = Int32.Parse(line.Remove(line.IndexOf("_")));
-                    string code = line.Substring(line.IndexOf("\"") + 1, line.Length - line.IndexOf("\"") - 2);
-                    cheats.ElementAt(id).Code = code;
-                }
-
-                if (line.Contains("_enable"))
-                {
-                    line = line.Remove(0, 5);
-                    int id = Int32.Parse(line.Remove(line.IndexOf("_")));
-                    string enable = line.Substring(line.IndexOf("=") + 2).ToLower();
-                    if (enable == "false")
-                    {
-                        cheats.ElementAt(id).Enable = false;
-                    }
-                    else if (enable == "true")
-                    {
-                        cheats.ElementAt(id).Enable = true;
-                    }
-                }
-            }
-            PopulateListBox();
         }
 
         private void SaveFile(object sender, RoutedEventArgs e)
@@ -145,14 +179,37 @@ namespace RetroArch_Cheat_Manager
             File.WriteAllText(filepath, cheatFileContents.ToString());
         }
 
+        private void CloseFile(object sender, RoutedEventArgs e)
+        {
+            string messageBoxText = "Save changes before closing?";
+            string messageBoxCaption = "RetroArch Cheats Manager";
+            MessageBoxButton messageBoxButton = MessageBoxButton.YesNo;
+            MessageBoxImage messageBoxImage = MessageBoxImage.Warning;
+            MessageBoxResult messageBoxResult = MessageBox.Show(messageBoxText, messageBoxCaption, messageBoxButton, messageBoxImage);
+
+            switch (messageBoxResult)
+            {
+                case MessageBoxResult.Yes:
+                    SaveFile(sender, e);
+                    break;
+                case MessageBoxResult.No:
+                    break;
+            }
+
+            EnableUI(false);
+            filepath = null;
+            UpdateCheatCount(0);
+            //cheatCount = 0;
+        }
+
         private void DeleteCheat(object sender, RoutedEventArgs e)
         {
             int index = listbox_CheatsList.SelectedIndex;
             if (index != -1)
             {
                 cheats.RemoveAt(index);
-                cheatCount--;
-                UpdateCheatCount(cheatCount);
+                //cheatCount--;
+                UpdateCheatCount(--cheatCount);
             }
         }
 
@@ -186,8 +243,8 @@ namespace RetroArch_Cheat_Manager
             string name = textbox_CheatName.Text;
             string code = textbox_CheatCodes.Text;
             cheats.Add(new Cheat(name, code, false, cheatCount));
-            cheatCount++;
-            UpdateCheatCount(cheatCount);
+            //cheatCount++;
+            UpdateCheatCount(++cheatCount);
         }
     }
 }

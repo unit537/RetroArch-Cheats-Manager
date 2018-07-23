@@ -15,17 +15,10 @@
         <DockPanel>
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="_File">
-                    <MenuItem Header="_New" Click="NewFile"/>
-                    <MenuItem Header="_Open" Click="OpenFile"/>
-                    <MenuItem Header="_Save" Click="SaveFile"/>
-                </MenuItem>
-                <MenuItem Header="_Test">
-                    <MenuItem Header="_Option 1"/>
-                    <MenuItem Header="O_ption 2"/>
-                    <MenuItem Header="Op_tion 3"/>
-                    <MenuItem Header="Opt_ion 4"/>
-                    <MenuItem Header="Opti_on 5"/>
-                    <MenuItem Header="Optio_n 6"/>
+                    <MenuItem x:Name="menuitem_FileNew" Header="_New" Click="NewFile"/>
+                    <MenuItem x:Name="menuitem_FileOpen" Header="_Open" Click="OpenFile"/>
+                    <MenuItem x:Name="menuitem_FileSave" Header="_Save" Click="SaveFile"/>
+                    <MenuItem x:Name="menuitem_FileClose" Header="_Close" Click="CloseFile"/>
                 </MenuItem>
             </Menu>
         </DockPanel>
@@ -45,10 +38,9 @@
                 </Grid.RowDefinitions>
 
                 <Label x:Name="label_CurrentCheats" Content="Current Cheats (0):" />
-                <ListBox x:Name="listbox_CheatsList" Grid.Row="1" >
-                </ListBox>
-                <Button  x:Name="button_EditCheat" Content="Edit Cheat" Grid.Row="2" Click="EditCheat"/>
-                <Button  x:Name="button_DeleteCheat" Content="Delete Cheat" Grid.Row="3" Click="DeleteCheat" />
+                <ListBox x:Name="listbox_CheatsList" Grid.Row="1" Margin="2" />
+                <Button  x:Name="button_EditCheat" Content="Edit Cheat" Grid.Row="2" Click="EditCheat" Margin="2"/>
+                <Button  x:Name="button_DeleteCheat" Content="Delete Cheat" Grid.Row="3" Click="DeleteCheat" Margin="2" />
             </Grid>
 
             <Grid Grid.Column="1">
@@ -61,12 +53,12 @@
                     <RowDefinition Height="1*" />
                 </Grid.RowDefinitions>
 
-                <Label Content="Cheat Name:" />
-                <TextBox x:Name="textbox_CheatName" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="1"/>
-                <Label Content="Cheat Codes:" Grid.Row="2"/>
-                <TextBox x:Name="textbox_CheatCodes"  AcceptsReturn="True" Grid.Row="3"/>
-                <Button x:Name="button_SaveCheat" Content="Save Cheat" Grid.Row="4" Click="SaveCheat"/>
-                <Button x:Name="button_NewCheat" Content="Add As New Cheat" Grid.Row="5" Click="AddCheat"/>
+                <Label x:Name="label_CheatName" Content="Cheat Name:" />
+                <TextBox x:Name="textbox_CheatName" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="1" Margin="2"/>
+                <Label x:Name="label_CheatCodes" Content="Cheat Codes:" Grid.Row="2"/>
+                <TextBox x:Name="textbox_CheatCodes"  AcceptsReturn="True" Grid.Row="3" Margin="2"/>
+                <Button x:Name="button_SaveCheat" Content="Save Cheat" Grid.Row="4" Click="SaveCheat" Margin="2"/>
+                <Button x:Name="button_NewCheat" Content="Add As New Cheat" Grid.Row="5" Click="AddCheat" Margin="2"/>
             </Grid>
 
         </Grid>
